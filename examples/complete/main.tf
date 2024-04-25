@@ -11,8 +11,8 @@ terraform {
 provider "snowflake" {}
 
 module "snowflake_database_consumption" {
-  source  = "../../"
+  source = "../../"
 
-  database_name    = "CONSUMPTION"
-  database_comment = "CONSUMPTION Database"
+  database_name = "CONSUMPTION"
+  comment       = "CONSUMPTION Database"
 }

@@ -14,5 +14,5 @@ module "snowflake_database_consumption" {
   source  = "../../"
 
   database_name    = "CONSUMPTION"
-  database_comment = "CONSUMPTION Database"
+  comment = "CONSUMPTION Database"
 }

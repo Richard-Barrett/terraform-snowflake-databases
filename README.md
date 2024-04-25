@@ -39,7 +39,7 @@ module "snowflake_database_consumption" {
   version = "0.0.1"
 
   database_name    = "CONSUMPTION"
-  database_comment = "CONSUMPTION Database"
+  comment = "CONSUMPTION Database"
 }
 ```
 
@@ -77,7 +77,7 @@ locals {
 
 As you can see this module is very good at baking on the databases, database_roles, and database_grants.
 
-The only required values are `database_name` and `database_comment`.
+The only required values are `database_name` and `comment`.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

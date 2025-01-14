@@ -85,13 +85,13 @@ The only required values are `database_name` and `comment`.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.6 |
-| <a name="requirement_snowflake"></a> [snowflake](#requirement\_snowflake) | ~> 0.89.0 |
+| <a name="requirement_snowflake"></a> [snowflake](#requirement\_snowflake) | ~> 1.0.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_snowflake"></a> [snowflake](#provider\_snowflake) | 0.75.0 |
+| <a name="provider_snowflake"></a> [snowflake](#provider\_snowflake) | 1.0.1 |
 
 ## Modules
 
@@ -101,27 +101,25 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [snowflake_account_role.read](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/account_role) | resource |
+| [snowflake_account_role.write](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/account_role) | resource |
 | [snowflake_database.this](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/database) | resource |
-| [snowflake_database_grant.create](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/database_grant) | resource |
-| [snowflake_database_grant.grant](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/database_grant) | resource |
-| [snowflake_role.read](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/role) | resource |
-| [snowflake_role.write](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/role) | resource |
-| [snowflake_schema_grant.all](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/schema_grant) | resource |
-| [snowflake_schema_grant.create](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/schema_grant) | resource |
-| [snowflake_schema_grant.read](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/schema_grant) | resource |
-| [snowflake_table_grant.read](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/table_grant) | resource |
-| [snowflake_table_grant.write](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/table_grant) | resource |
-| [snowflake_view_grant.read](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/view_grant) | resource |
+| [snowflake_grant_privileges_to_account_role.create](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/grant_privileges_to_account_role) | resource |
+| [snowflake_grant_privileges_to_account_role.grant](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/grant_privileges_to_account_role) | resource |
+| [snowflake_grant_privileges_to_account_role.read](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/grant_privileges_to_account_role) | resource |
+| [snowflake_grant_privileges_to_account_role.schema_all](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/grant_privileges_to_account_role) | resource |
+| [snowflake_grant_privileges_to_account_role.schema_create](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/grant_privileges_to_account_role) | resource |
+| [snowflake_grant_privileges_to_account_role.table_read](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/grant_privileges_to_account_role) | resource |
+| [snowflake_grant_privileges_to_account_role.table_write](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/grant_privileges_to_account_role) | resource |
+| [snowflake_grant_privileges_to_account_role.view_read](https://registry.terraform.io/providers/Snowflake-Labs/snowflake/latest/docs/resources/grant_privileges_to_account_role) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_shares"></a> [account\_shares](#input\_account\_shares) | Snowflake Account Shares that for Database Shares Across Accounts | `set(string)` | `[]` | no |
 | <a name="input_comment"></a> [comment](#input\_comment) | Database Comments | `string` | n/a | yes |
 | <a name="input_data_retention_time_in_days"></a> [data\_retention\_time\_in\_days](#input\_data\_retention\_time\_in\_days) | Snowflake Database data retention time in days | `string` | `"7"` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database | `string` | n/a | yes |
-| <a name="input_enable_multiple_grants"></a> [enable\_multiple\_grants](#input\_enable\_multiple\_grants) | (Boolean) When this is set to true, multiple grants of the same type can be created. This will cause Terraform to not revoke grants applied to roles and objects outside Terraform. | `bool` | `true` | no |
 | <a name="input_read_permissions"></a> [read\_permissions](#input\_read\_permissions) | Read Permissions for RBAC | `set(string)` | <pre>[<br>  "SELECT"<br>]</pre> | no |
 | <a name="input_schema_object_types"></a> [schema\_object\_types](#input\_schema\_object\_types) | n/a | `set(string)` | <pre>[<br>  "TABLE",<br>  "VIEW"<br>]</pre> | no |
 | <a name="input_schema_read_privileges"></a> [schema\_read\_privileges](#input\_schema\_read\_privileges) | Schema Privileges | `set(string)` | <pre>[<br>  "USAGE",<br>  "MONITOR"<br>]</pre> | no |

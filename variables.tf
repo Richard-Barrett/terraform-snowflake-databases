@@ -8,12 +8,6 @@ variable "comment" {
   description = "Database Comments"
 }
 
-variable "account_shares" {
-  type        = set(string)
-  description = "Snowflake Account Shares that for Database Shares Across Accounts"
-  default     = []
-}
-
 variable "data_retention_time_in_days" {
   type        = string
   description = "Snowflake Database data retention time in days"
@@ -23,12 +17,6 @@ variable "data_retention_time_in_days" {
 variable "with_grant_option" {
   type        = bool
   description = "Ignore Edition Check"
-  default     = true
-}
-
-variable "enable_multiple_grants" {
-  type        = bool
-  description = "(Boolean) When this is set to true, multiple grants of the same type can be created. This will cause Terraform to not revoke grants applied to roles and objects outside Terraform."
   default     = true
 }
 

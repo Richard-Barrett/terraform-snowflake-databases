@@ -117,7 +117,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_shares"></a> [account\_shares](#input\_account\_shares) | Snowflake Account Shares that for Database Shares Across Accounts | `set(string)` | `[]` | no |
 | <a name="input_comment"></a> [comment](#input\_comment) | Database Comments | `string` | n/a | yes |
 | <a name="input_data_retention_time_in_days"></a> [data\_retention\_time\_in\_days](#input\_data\_retention\_time\_in\_days) | Snowflake Database data retention time in days | `string` | `"7"` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database | `string` | n/a | yes |

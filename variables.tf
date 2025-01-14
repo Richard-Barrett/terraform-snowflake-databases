@@ -8,12 +8,6 @@ variable "comment" {
   description = "Database Comments"
 }
 
-variable "account_shares" {
-  type        = set(string)
-  description = "Snowflake Account Shares that for Database Shares Across Accounts"
-  default     = []
-}
-
 variable "data_retention_time_in_days" {
   type        = string
   description = "Snowflake Database data retention time in days"

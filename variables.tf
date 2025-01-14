@@ -26,12 +26,6 @@ variable "with_grant_option" {
   default     = true
 }
 
-variable "enable_multiple_grants" {
-  type        = bool
-  description = "(Boolean) When this is set to true, multiple grants of the same type can be created. This will cause Terraform to not revoke grants applied to roles and objects outside Terraform."
-  default     = true
-}
-
 variable "schema_write_privileges" {
   type        = set(string)
   description = "Schema Privileges"

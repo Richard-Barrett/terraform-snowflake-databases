@@ -3,7 +3,7 @@ terraform {
   required_providers {
     snowflake = {
       source  = "Snowflake-Labs/snowflake"
-      version = "~> 0.89.0"
+      version = "~> 1.0.1"
     }
   }
 }
@@ -22,106 +22,111 @@ resource "snowflake_database" "this" {
   data_retention_time_in_days = var.data_retention_time_in_days
 }
 
-resource "snowflake_role" "read" {
+resource "snowflake_account_role" "read" {
   name    = "${upper(var.database_name)}_DB_RO"
   comment = var.comment
 }
 
-resource "snowflake_role" "write" {
+resource "snowflake_account_role" "write" {
   name    = "${upper(var.database_name)}_DB_RW"
   comment = var.comment
 }
 
 // DATABASE GRANT AND ACCESS FOR RO AND RW ROLES
-resource "snowflake_database_grant" "grant" {
-  for_each      = local.metadata_access_types
-  database_name = snowflake_database.this.name
+resource "snowflake_grant_privileges_to_account_role" "grant" {
+  for_each = local.metadata_access_types
 
-  privilege = each.key
-  roles     = [snowflake_role.read.name, snowflake_role.write.name]
-
-  shares                 = toset(var.account_shares)
-  with_grant_option      = var.with_grant_option
-  enable_multiple_grants = var.enable_multiple_grants
+  privileges        = [each.key]
+  account_role_name = snowflake_account_role.read.name # Grant privileges to the read role
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.this.name
+  }
+  with_grant_option = var.with_grant_option
 }
 
 // Write Access Grants for Schemas, Tables, Views
-resource "snowflake_database_grant" "create" {
-  database_name          = snowflake_database.this.name
-  privilege              = "CREATE SCHEMA"
-  roles                  = [snowflake_role.write.name]
-  with_grant_option      = false
-  enable_multiple_grants = true
+resource "snowflake_grant_privileges_to_account_role" "create" {
+  privileges        = ["CREATE SCHEMA"]
+  account_role_name = snowflake_account_role.write.name # Grant privileges to the write role
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.this.name
+  }
+  with_grant_option = false
 }
 
 // PERMISSIONS SECTION:
 // Read Access Grants for Schemas, Tables, Views
-resource "snowflake_schema_grant" "read" {
+resource "snowflake_grant_privileges_to_account_role" "read" {
   for_each = var.schema_read_privileges
 
-  database_name          = snowflake_database.this.name
-  on_future              = true
-  privilege              = each.value
-  roles                  = [snowflake_role.read.name, snowflake_role.write.name]
-  with_grant_option      = false
-  enable_multiple_grants = true
-
+  privileges        = [each.value]
+  account_role_name = snowflake_account_role.read.name # Grant privileges to the read role
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.this.name
+  }
+  with_grant_option = false
 }
 
-resource "snowflake_table_grant" "read" {
+resource "snowflake_grant_privileges_to_account_role" "table_read" {
   for_each = var.read_permissions
 
-  database_name          = snowflake_database.this.name
-  on_future              = true
-  privilege              = each.value
-  roles                  = [snowflake_role.read.name, snowflake_role.write.name]
-  with_grant_option      = false
-  enable_multiple_grants = true
+  privileges        = [each.value]
+  account_role_name = snowflake_account_role.read.name # Grant privileges to the read role
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.this.name
+  }
+  with_grant_option = false
 }
 
-resource "snowflake_view_grant" "read" {
+resource "snowflake_grant_privileges_to_account_role" "view_read" {
   for_each = var.read_permissions
 
-  database_name          = snowflake_database.this.name
-  on_future              = true
-  privilege              = each.value
-  roles                  = [snowflake_role.read.name, snowflake_role.write.name]
-  with_grant_option      = false
-  enable_multiple_grants = true
+  privileges        = [each.value]
+  account_role_name = snowflake_account_role.read.name # Grant privileges to the read role
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.this.name
+  }
+  with_grant_option = false
 }
 
 // WRITE PERMS FOR SCHEMAS, TABLES, VIEWS
-resource "snowflake_schema_grant" "create" {
+resource "snowflake_grant_privileges_to_account_role" "schema_create" {
   for_each = var.schema_object_types
 
-  database_name     = snowflake_database.this.name
-  on_future         = true
-  privilege         = "CREATE ${each.value}"
-  roles             = [snowflake_role.write.name]
+  privileges        = ["CREATE ${each.value}"]
+  account_role_name = snowflake_account_role.write.name # Grant privileges to the write role
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.this.name
+  }
   with_grant_option = false
-
-  enable_multiple_grants = true
 }
 
-resource "snowflake_schema_grant" "all" {
+resource "snowflake_grant_privileges_to_account_role" "schema_all" {
   for_each = var.schema_write_privileges
 
-  database_name     = snowflake_database.this.name
-  on_future         = true
-  privilege         = each.value
-  roles             = [snowflake_role.write.name]
+  privileges        = [each.value]
+  account_role_name = snowflake_account_role.write.name # Grant privileges to the write role
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.this.name
+  }
   with_grant_option = false
-
-  enable_multiple_grants = true
 }
 
-resource "snowflake_table_grant" "write" {
+resource "snowflake_grant_privileges_to_account_role" "table_write" {
   for_each = var.write_permissions
 
-  database_name          = snowflake_database.this.name
-  on_future              = true
-  privilege              = each.value
-  roles                  = [snowflake_role.write.name]
-  with_grant_option      = false
-  enable_multiple_grants = true
+  privileges        = [each.value]
+  account_role_name = snowflake_account_role.write.name # Grant privileges to the write role
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.this.name
+  }
+  with_grant_option = false
 }
